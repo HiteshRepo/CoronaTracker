@@ -49,3 +49,14 @@ export const fetchCountries = async () => {
     console.log(error);
   }
 };
+
+export const fetchIndianStateWiseData = async () => {
+  try {
+    const response = await axios.get(
+      'https://api.covid19india.org/state_district_wise.json'
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
