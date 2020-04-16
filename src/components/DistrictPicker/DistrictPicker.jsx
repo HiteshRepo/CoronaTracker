@@ -4,7 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormControl } from '@material-ui/core';
 
-import styles from './StatePicker.module.css';
+import styles from './DistrictPicker.module.css';
 
 import { fetchIndianStateWiseData } from '../../api';
 
@@ -18,7 +18,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function StateSelect({ country, handleStateChange }) {
+export default function DistrictSelect({
+  state,
+  districts,
+  handleDistrictChange,
+}) {
   const [fetchedStateData, setFetchedStateData] = useState([]);
 
   useEffect(() => {
@@ -33,17 +37,8 @@ export default function StateSelect({ country, handleStateChange }) {
 
   const classes = useStyles();
 
-  const checkIndia = () => {
-    if (fetchedStateData && fetchedStateData.data) {
-      let statesNew = Object.keys(fetchedStateData.data);
-      statesNew = statesNew.map((state) => {
-        return { label: state };
-      });
-
-      states = statesNew;
-    }
-
-    if (country && country.toUpperCase() === 'INDIA') {
+  const checkState = () => {
+    if (state) {
       return false;
     }
     return true;
@@ -52,9 +47,9 @@ export default function StateSelect({ country, handleStateChange }) {
   return (
     <FormControl>
       <Autocomplete
-        id='country-select-demo'
+        id='state-select-demo'
         style={{ width: 300 }}
-        options={states}
+        options={districts}
         classes={{
           option: classes.option,
         }}
@@ -66,7 +61,7 @@ export default function StateSelect({ country, handleStateChange }) {
         renderInput={(params) => (
           <TextField
             {...params}
-            label='Choose a state'
+            label='Choose a district'
             variant='outlined'
             inputProps={{
               ...params.inputProps,
@@ -74,17 +69,9 @@ export default function StateSelect({ country, handleStateChange }) {
             }}
           />
         )}
-        disabled={checkIndia()}
-        onChange={(e) => handleStateChange(e.target.innerText)}
+        disabled={checkState()}
+        onChange={(e) => handleDistrictChange(e.target.innerText)}
       />
     </FormControl>
   );
 }
-
-let states = [
-  { label: 'Kerela' },
-  { label: 'Odisha' },
-  { label: 'Delhi' },
-  { label: 'Maharashtra' },
-  { label: 'Tamil Nadu' },
-];
